@@ -66,4 +66,4 @@ Balancer, Subnet, Internet gateway and a user template of "apache-puppet.sh".
 	- Configure HTTP
 	- Configure HTTPS
 
-This is how I accomplish the given Project.
+This is how I accomplished the given Project.
