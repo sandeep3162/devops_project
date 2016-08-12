@@ -67,3 +67,7 @@ Balancer, Subnet, Internet gateway and a user template of "apache-puppet.sh".
 	- Configure HTTPS
 
 This is how I accomplished the given Project.
+
+
+-SANDEEP NAGULA
+AWS Certified Solution Architect and SysOps Administrator
