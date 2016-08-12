@@ -1,6 +1,7 @@
 DevOps Project:
 
 Below is the procedure which I followed to accomplish the given project.
+
 	I.  Initially I created an ubuntu instance in AWS.
 	II. Installed open source puppetmaster in it.
 	III.Installed the AWS module
