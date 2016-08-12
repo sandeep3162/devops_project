@@ -10,14 +10,16 @@ vpc => 'Web Host VPC',
 region => 'us-east-1',
 availability_zone   => 'us-east-1a',
 cidr_block => '10.0.0.0/24',
+route_table => 'Web Host Route',
 }
 ec2_vpc_internet_gateway{ 'Web Host IG' :
 ensure => present,
+region => 'us-east-1',
 vpc => 'Web Host VPC',
-region => 
 }
 ec2_vpc_routetable{ 'Web Host Route':
 ensure => present,
+region => 'us-east-1',
 vpc => 'Web Host VPC',
 routes => [
     {
@@ -33,18 +35,18 @@ ec2_securitygroup { 'Web Host Security':
   ensure      => present,
   region      => 'us-east-1',
   description => 'Security Purpose',
-  subnet => 'Web Host Subnet',
+  subnet      => 'Web Host Subnet',
+  vpc         => 'Web Host VPC',
   ingress     => [{
     protocol  => 'tcp',
     port      => 80,
     cidr      => '0.0.0.0/0',
-  },{
-    security_group => 'other-security-group',
-    vpc => 'Web Host VPC',
+#  },{
+#    security_group => 'other-security-group',
   }],
-  tags        => {
-    tag_name  => 'value',
-  },
+#  tags        => {
+#    tag_name  => 'value',
+#  },
 }
 ec2_instance { 'Web Host server1':
   ensure            => present,
@@ -54,8 +56,9 @@ ec2_instance { 'Web Host server1':
   instance_type     => 't2.micro',
   monitoring        => true,
   key_name          => 'sample',
+  subnet 			=> 'Web Host Subnet',
   security_groups   => ['Web Host Security'],
-#  user_data         => template('module/file-path.sh.erb'),
+  user_data         => template('apache-puppet.sh'),
 #  tags              => {
 #    tag_name => 'value',
 #  },
@@ -68,8 +71,9 @@ ec2_instance { 'Web Host server2':
   instance_type     => 't2.micro',
   monitoring        => true,
   key_name          => 'sample',
+  subnet 			=> 'Web Host Subnet',
   security_groups   => ['Web Host Security'],
-#  user_data         => template('module/file-path.sh.erb'),
+  user_data         => template('apache-puppet.sh'),
 #  tags              => {
 #    tag_name => 'value',
 #  },
@@ -91,7 +95,7 @@ elb_loadbalancer { 'Web Host load-balancer':
     load_balancer_port => 443,
     instance_protocol  => 'HTTPS',
     instance_port      => 8080,
-    ssl_certificate_id => 'arn:aws:iam::123456789000:server-certificate/yourcert.com',
+    ssl_certificate_id => 'arn:aws:acm:us-east-1:753757040569:certificate/332e4a7e-e03d-4d2e-876e-79b623601f18',
   }],
   tags                 => {
     tag_name => 'value',
